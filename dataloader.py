@@ -13,7 +13,7 @@ class Gen_Data_loader():
                 line = line.strip()
                 line = line.split()
                 parse_line = [int(x) for x in line]
-                if len(parse_line) == 20:
+                if 3 <= len(parse_line) <= 20: # == 20
                     self.token_stream.append(parse_line)
 
         self.num_batch = int(len(self.token_stream) / self.batch_size)
