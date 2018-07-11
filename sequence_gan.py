@@ -111,15 +111,15 @@ def main():
     #  pre-train generator
     print ('Start pre-training...')
     # log.write('pre-training...\n')
-    for epoch in range(PRE_EPOCH_NUM):
-        loss = pre_train_epoch(sess, generator, gen_data_loader)
-        if epoch % 5 == 0:
-            generate_samples(sess, generator, BATCH_SIZE, generated_num, eval_file)
-            likelihood_data_loader.create_batches(eval_file)
-            test_loss = target_loss(sess, target_lstm, likelihood_data_loader)
-            print ('pre-train epoch ', epoch, 'test_loss ', test_loss)
-            buffer = 'epoch:\t'+ str(epoch) + '\tnll:\t' + str(test_loss) + '\n'
-            log.write(buffer)
+    # for epoch in range(PRE_EPOCH_NUM):
+    #     loss = pre_train_epoch(sess, generator, gen_data_loader)
+    #     if epoch % 5 == 0:
+    #         generate_samples(sess, generator, BATCH_SIZE, generated_num, eval_file)
+    #         likelihood_data_loader.create_batches(eval_file)
+    #         test_loss = target_loss(sess, target_lstm, likelihood_data_loader)
+    #         print ('pre-train epoch ', epoch, 'test_loss ', test_loss)
+    #         buffer = 'epoch:\t'+ str(epoch) + '\tnll:\t' + str(test_loss) + '\n'
+    #         log.write(buffer)
 
     print ('Start pre-training discriminator...')
     # Train 3 epoch on the generated data and do this for 50 times

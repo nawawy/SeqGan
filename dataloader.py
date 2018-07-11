@@ -67,25 +67,35 @@ class Dis_dataloader():
         self.batch_size = batch_size
         self.sentences = np.array([])
         self.labels = np.array([])
+        self.word_dict = Word2index()
+        self.word_dict.load_dict('save/word2indx.txt')
 
     def load_train_data(self, positive_file, negative_file):
         # Load data
         positive_examples = []
         negative_examples = []
-        with open(positive_file)as fin:
+        with open(positive_file, encoding='utf-8')as fin:
             for line in fin:
                 line = line.strip()
                 line = line.split()
-                parse_line = [int(x) for x in line]
-                positive_examples.append(parse_line)
+                parse_line = [str(x) for x in line]
+                if 3 <= len(parse_line) <= 20:
+                    positive_examples.append(parse_line)
         with open(negative_file)as fin:
             for line in fin:
                 line = line.strip()
                 line = line.split()
                 parse_line = [int(x) for x in line]
-                if len(parse_line) == 20:
+                if 3 <= len(parse_line) <= 20:
                     negative_examples.append(parse_line)
-        self.sentences = np.array(positive_examples + negative_examples)
+
+        positive_examples = str2idxs(positive_examples, self.word_dict)
+        positive_examples = padding_data(positive_examples, self.word_dict)
+
+        # print(len(positive_examples), len(positive_examples[0]))
+        # print(len(negative_examples), len(negative_examples[0]))
+
+        self.sentences = np.array(positive_examples) + np.array(negative_examples)
 
         # Generate labels
         positive_labels = [[0, 1] for _ in positive_examples]
