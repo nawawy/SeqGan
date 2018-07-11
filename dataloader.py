@@ -1,29 +1,61 @@
 import numpy as np
+from word2index import Word2index
+from keras import preprocessing
+
+
+def str2idxs(sents, w2x):
+    for line_ind, line in enumerate(sents):
+        for words_ind, words in enumerate(line):
+                sents[line_ind][words_ind]= w2x.dict[words]
+
+    return sents
+
+def padding_data(seqs, w2x):
+        seqs = preprocessing.sequence.pad_sequences(seqs, dtype='int32', padding='pre', truncating='pre',value=w2x.PAD_IDX)
+        return seqs
 
 
 class Gen_Data_loader():
     def __init__(self, batch_size):
         self.batch_size = batch_size
         self.token_stream = []
+        self.word_dict = Word2index()
+        self.word_dict.load_dict('save/word2indx.txt')
 
-    def create_batches(self, data_file):
+    def create_batches(self, data_file, gen_flag=0):
         self.token_stream = []
-        with open(data_file, 'r') as f:
+        first = True
+        with open(data_file, 'r', encoding='utf-8') as f:
             for line in f:
                 line = line.strip()
                 line = line.split()
-                parse_line = [int(x) for x in line]
-                if 3 <= len(parse_line) <= 20: # == 20
+                parse_line = [str(x) for x in line]
+
+                if first:  # remove \ufeff special character from the first line
+                    parse_line[len(parse_line)-1] = parse_line[len(parse_line)-1].replace('\ufeff', '')
+                    first = False
+
+                if 3 <= len(parse_line) <= 20:
                     self.token_stream.append(parse_line)
 
         self.num_batch = int(len(self.token_stream) / self.batch_size)
         self.token_stream = self.token_stream[:self.num_batch * self.batch_size]
-        self.sequence_batch = np.split(np.array(self.token_stream), self.num_batch, 0)
+
+        # convert words to indices and then pad them to have the same length
+        if gen_flag:
+            self.token_stream = str2idxs(self.token_stream, self.word_dict)
+            self.token_stream = padding_data(self.token_stream, self.word_dict)
+
         self.pointer = 0
 
     def next_batch(self):
+
+        self.sequence_batch = np.split(np.array(self.token_stream), self.num_batch, 0)
         ret = self.sequence_batch[self.pointer]
         self.pointer = (self.pointer + 1) % self.num_batch
+
+        ret = np.array([np.array(xi) for xi in ret])
+
         return ret
 
     def reset_pointer(self):
@@ -74,7 +106,6 @@ class Dis_dataloader():
 
         self.pointer = 0
 
-
     def next_batch(self):
         ret = self.sentences_batches[self.pointer], self.labels_batches[self.pointer]
         self.pointer = (self.pointer + 1) % self.num_batch
@@ -82,4 +113,3 @@ class Dis_dataloader():
 
     def reset_pointer(self):
         self.pointer = 0
-

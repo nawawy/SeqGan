@@ -34,7 +34,7 @@ dis_batch_size = 64
 #  Basic Training Parameters
 #########################################################################################
 TOTAL_BATCH = 100 # Changed from 200 to 100
-positive_file = 'save/ye_real_data.txt'
+positive_file = 'save/ye_data.txt'
 negative_file = 'save/generator_sample.txt'
 eval_file = 'save/eval_file.txt'
 generated_num = 10000
@@ -86,11 +86,12 @@ def main():
 
     gen_data_loader = Gen_Data_loader(BATCH_SIZE)
     likelihood_data_loader = Gen_Data_loader(BATCH_SIZE) # For testing
-    vocab_size = 5000
+    vocab_size = 10581 # changed 5000 to 10581
     dis_data_loader = Dis_dataloader(BATCH_SIZE)
 
     generator = Generator(vocab_size, BATCH_SIZE, EMB_DIM, HIDDEN_DIM, SEQ_LENGTH, START_TOKEN)
     target_params = cPickle.load(open('save/target_params_py3.pkl', 'rb'))
+
     target_lstm = TARGET_LSTM(vocab_size, BATCH_SIZE, EMB_DIM, HIDDEN_DIM, SEQ_LENGTH, START_TOKEN, target_params) # The oracle model
 
     discriminator = Discriminator(sequence_length=20, num_classes=2, vocab_size=vocab_size, embedding_size=dis_embedding_dim, 
@@ -103,8 +104,8 @@ def main():
 
     oracle_file = 'save/eval_file.txt'
     # First, use the oracle model to provide the positive examples, which are sampled from the oracle data distribution
-    generate_samples(sess, target_lstm, BATCH_SIZE, generated_num, oracle_file)
-    gen_data_loader.create_batches(oracle_file)
+    # generate_samples(sess, target_lstm, BATCH_SIZE, generated_num, oracle_file)
+    gen_data_loader.create_batches(positive_file, gen_flag=1)
 
     log = open('save/experiment-log.txt', 'w')
     #  pre-train generator
@@ -152,7 +153,7 @@ def main():
         # Test
         if total_batch % 5 == 0 or total_batch == TOTAL_BATCH - 1:
             generate_samples(sess, generator, BATCH_SIZE, generated_num, eval_file)
-            likelihood_data_loader.create_batches(eval_file)
+            likelihood_data_loader.create_batches(eval_file, gen_flag=0)
             test_loss = target_loss(sess, target_lstm, likelihood_data_loader)
             buffer = 'epoch:\t' + str(total_batch) + '\tnll:\t' + str(test_loss) + '\n'
             print ('total_batch: ', total_batch, 'test_loss: ', test_loss)
