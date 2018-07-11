@@ -54,5 +54,8 @@ class Word2index(object):
         self.SOS_IDX = self.dict[SOS_TOKEN]
         self.EOS_IDX = self.dict[EOS_TOKEN]
 
+    def __len__(self):
+        return len(self.dict)
+
     def __call__(self, word):
         return self.dict.get(word, self.UNK_IDX)

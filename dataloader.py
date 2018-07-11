@@ -6,7 +6,7 @@ from keras import preprocessing
 def str2idxs(sents, w2x):
     for line_ind, line in enumerate(sents):
         for words_ind, words in enumerate(line):
-                sents[line_ind][words_ind]= w2x.dict[words]
+                sents[line_ind][words_ind]= w2x(words)
 
     return sents
 
@@ -16,11 +16,11 @@ def padding_data(seqs, w2x):
 
 
 class Gen_Data_loader():
-    def __init__(self, batch_size):
+    def __init__(self, word_dict,  batch_size):
         self.batch_size = batch_size
         self.token_stream = []
-        self.word_dict = Word2index()
-        self.word_dict.load_dict('save/word2indx.txt')
+        self.word_dict = word_dict#Word2index()
+        #self.word_dict.load_dict('save/word2indx.txt')
 
     def create_batches(self, data_file, gen_flag=0):
         self.token_stream = []
@@ -63,12 +63,12 @@ class Gen_Data_loader():
 
 
 class Dis_dataloader():
-    def __init__(self, batch_size):
+    def __init__(self, word_dict, batch_size):
         self.batch_size = batch_size
         self.sentences = np.array([])
         self.labels = np.array([])
-        self.word_dict = Word2index()
-        self.word_dict.load_dict('save/word2indx.txt')
+        self.word_dict = word_dict #Word2index()
+        #self.word_dict.load_dict('save/word2indx.txt')
 
     def load_train_data(self, positive_file, negative_file):
         # Load data
@@ -91,11 +91,12 @@ class Dis_dataloader():
 
         positive_examples = str2idxs(positive_examples, self.word_dict)
         positive_examples = padding_data(positive_examples, self.word_dict)
+        self.sentences = np.concatenate([positive_examples, negative_examples], 0)
 
         # print(len(positive_examples), len(positive_examples[0]))
         # print(len(negative_examples), len(negative_examples[0]))
 
-        self.sentences = np.array(positive_examples) + np.array(negative_examples)
+        #self.sentences = np.array(positive_examples + negative_examples)
 
         # Generate labels
         positive_labels = [[0, 1] for _ in positive_examples]

@@ -6,6 +6,7 @@ from generator import Generator
 from discriminator import Discriminator
 from rollout import ROLLOUT
 from target_lstm import TARGET_LSTM
+from word2index import Word2index
 #import cPickle
 import _pickle as cPickle
 
@@ -37,6 +38,7 @@ TOTAL_BATCH = 100 # Changed from 200 to 100
 positive_file = 'save/ye_data.txt'
 negative_file = 'save/generator_sample.txt'
 eval_file = 'save/eval_file.txt'
+vocab_file ='save/word2indx.txt'
 generated_num = 10000
 
 
@@ -84,10 +86,13 @@ def main():
     np.random.seed(SEED)
     assert START_TOKEN == 0
 
-    gen_data_loader = Gen_Data_loader(BATCH_SIZE)
-    likelihood_data_loader = Gen_Data_loader(BATCH_SIZE) # For testing
-    vocab_size = 10581 # changed 5000 to 10581
-    dis_data_loader = Dis_dataloader(BATCH_SIZE)
+    word_dict = Word2index()
+    word_dict.load_dict(vocab_file)
+
+    gen_data_loader = Gen_Data_loader(word_dict, BATCH_SIZE)
+    likelihood_data_loader = Gen_Data_loader(word_dict, BATCH_SIZE) # For testing
+    vocab_size = len(word_dict) # changed 5000 to 10581
+    dis_data_loader = Dis_dataloader(word_dict, BATCH_SIZE)
 
     generator = Generator(vocab_size, BATCH_SIZE, EMB_DIM, HIDDEN_DIM, SEQ_LENGTH, START_TOKEN)
     target_params = cPickle.load(open('save/target_params_py3.pkl', 'rb'))
@@ -102,7 +107,6 @@ def main():
     sess = tf.Session(config=config)
     sess.run(tf.global_variables_initializer())
 
-    oracle_file = 'save/eval_file.txt'
     # First, use the oracle model to provide the positive examples, which are sampled from the oracle data distribution
     # generate_samples(sess, target_lstm, BATCH_SIZE, generated_num, oracle_file)
     gen_data_loader.create_batches(positive_file, gen_flag=1)
@@ -110,22 +114,23 @@ def main():
     log = open('save/experiment-log.txt', 'w')
     #  pre-train generator
     print ('Start pre-training...')
-    # log.write('pre-training...\n')
-    # for epoch in range(PRE_EPOCH_NUM):
-    #     loss = pre_train_epoch(sess, generator, gen_data_loader)
-    #     if epoch % 5 == 0:
-    #         generate_samples(sess, generator, BATCH_SIZE, generated_num, eval_file)
-    #         likelihood_data_loader.create_batches(eval_file)
-    #         test_loss = target_loss(sess, target_lstm, likelihood_data_loader)
-    #         print ('pre-train epoch ', epoch, 'test_loss ', test_loss)
-    #         buffer = 'epoch:\t'+ str(epoch) + '\tnll:\t' + str(test_loss) + '\n'
-    #         log.write(buffer)
+    log.write('pre-training...\n')
+    for epoch in range(PRE_EPOCH_NUM):
+        loss = pre_train_epoch(sess, generator, gen_data_loader)
+        if epoch % 5 == 0:
+            generate_samples(sess, generator, BATCH_SIZE, generated_num, eval_file)
+            likelihood_data_loader.create_batches(eval_file)
+            test_loss = target_loss(sess, target_lstm, likelihood_data_loader)
+            print ('pre-train epoch ', epoch, 'test_loss ', test_loss)
+            buffer = 'epoch:\t'+ str(epoch) + '\tnll:\t' + str(test_loss) + '\n'
+            log.write(buffer)
 
     print ('Start pre-training discriminator...')
     # Train 3 epoch on the generated data and do this for 50 times
-    for _ in range(50):
+    for epoch in range(50):
         generate_samples(sess, generator, BATCH_SIZE, generated_num, negative_file)
         dis_data_loader.load_train_data(positive_file, negative_file)
+        print("Epoch : ", epoch)
         for _ in range(3):
             dis_data_loader.reset_pointer()
             for it in range(dis_data_loader.num_batch):
