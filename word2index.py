@@ -38,6 +38,8 @@ class Word2index(object):
         self.count = 0
 
         self.dict = {}
+        self.dict_indx = {}
+
         first = True
         for word in self.fin:
             word = word[0:-1]   # remove \n
@@ -47,6 +49,8 @@ class Word2index(object):
                 first = False
 
             self.dict[word] = self.count
+            self.dict_indx[self.count] = word
+
             self.count += 1
 
         self.UNK_IDX = self.dict[UNK_TOKEN]
@@ -54,8 +58,31 @@ class Word2index(object):
         self.SOS_IDX = self.dict[SOS_TOKEN]
         self.EOS_IDX = self.dict[EOS_TOKEN]
 
+        self.dict_indx[self.UNK_IDX] = UNK_TOKEN
+        self.dict_indx[self.PAD_IDX] = PAD_TOKEN
+        self.dict_indx[self.SOS_IDX] = SOS_TOKEN
+        self.dict_indx[self.EOS_IDX] = EOS_TOKEN
+
+    def indx_to_word(self, indx):
+        return self.dict_indx.get(indx)
+
     def __len__(self):
         return len(self.dict)
 
     def __call__(self, word):
         return self.dict.get(word, self.UNK_IDX)
+
+w = Word2index()
+w.load_dict('save/word2indx.txt')
+f = open('save/generator_sample.txt', 'r')
+fout = open('output_arabic.txt', 'w', encoding=
+            'utf-8')
+for line in f:
+    line = line.strip()
+    line = line.split()
+    parse_line = [str(w.indx_to_word(int(x))) for x in line]
+    out = ''
+    for word in parse_line:
+        out += word + ' '
+    fout.write('%s\n' % out)
+

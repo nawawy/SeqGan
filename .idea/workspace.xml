@@ -2,13 +2,12 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="780bf531-78e2-4e78-8871-452d90f5dea5" name="Default" comment="word to index class">
-      <change beforePath="$PROJECT_DIR$/.idea/SeqGAN.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/SeqGAN.iml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/dataloader.py" beforeDir="false" afterPath="$PROJECT_DIR$/dataloader.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/generator_sample.txt" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/save/eval_file.txt" beforeDir="false" afterPath="$PROJECT_DIR$/save/eval_file.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/save/experiment-log.txt" beforeDir="false" afterPath="$PROJECT_DIR$/save/experiment-log.txt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/save/generator_sample.txt" beforeDir="false" afterPath="$PROJECT_DIR$/save/generator_sample.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/sequence_gan.py" beforeDir="false" afterPath="$PROJECT_DIR$/sequence_gan.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/word2index.py" beforeDir="false" afterPath="$PROJECT_DIR$/word2index.py" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -20,15 +19,36 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file leaf-file-name="sequence_gan.py" pinned="false" current-in-tab="true">
+      <file leaf-file-name="sequence_gan.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/sequence_gan.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-272">
-              <caret line="137" column="24" selection-start-line="137" selection-start-column="24" selection-end-line="137" selection-end-column="24" />
+            <state relative-caret-position="1020">
+              <caret line="109" column="13" lean-forward="true" selection-start-line="109" selection-start-column="13" selection-end-line="109" selection-end-column="13" />
               <folding>
                 <element signature="e#0#18#0" expanded="true" />
                 <element signature="e#1688#2024#0" />
                 <element signature="e#2586#2929#0" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="word2index.py" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/word2index.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="275">
+              <caret line="70" selection-start-line="70" selection-end-line="70" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="dataloader.py" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/dataloader.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="374">
+              <caret line="94" column="8" selection-start-line="94" selection-start-column="8" selection-end-line="94" selection-end-column="8" />
+              <folding>
+                <element signature="e#0#18#0" expanded="true" />
               </folding>
             </state>
           </provider>
@@ -64,6 +84,9 @@
       <find>الحمدلله</find>
       <find>حلوه</find>
     </findStrings>
+    <replaceStrings>
+      <replace />
+    </replaceStrings>
   </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
@@ -76,10 +99,11 @@
         <option value="$PROJECT_DIR$/save/ye_data.txt" />
         <option value="$PROJECT_DIR$/save/word2indx.txt" />
         <option value="$PROJECT_DIR$/try.py" />
-        <option value="$PROJECT_DIR$/word2index.py" />
-        <option value="$PROJECT_DIR$/dataloader.py" />
         <option value="$PROJECT_DIR$/discriminator.py" />
         <option value="$PROJECT_DIR$/sequence_gan.py" />
+        <option value="$PROJECT_DIR$/word2index.py" />
+        <option value="$PROJECT_DIR$/output_arabic.txt" />
+        <option value="$PROJECT_DIR$/dataloader.py" />
       </list>
     </option>
   </component>
@@ -130,7 +154,7 @@
       </list>
     </option>
   </component>
-  <component name="RunManager" selected="Python.sequence_gan">
+  <component name="RunManager" selected="Python.word2index">
     <configuration name="sequence_gan" type="PythonConfigurationType" factoryName="Python" temporary="true">
       <module name="SeqGAN" />
       <option name="INTERPRETER_OPTIONS" value="" />
@@ -230,9 +254,9 @@
     </list>
     <recent_temporary>
       <list>
+        <item itemvalue="Python.word2index" />
         <item itemvalue="Python.sequence_gan" />
         <item itemvalue="Python.try" />
-        <item itemvalue="Python.word2index" />
         <item itemvalue="Python.triak" />
         <item itemvalue="Python.target_lstm" />
       </list>
@@ -246,9 +270,10 @@
     <editor active="true" />
     <layout>
       <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.20158625" />
+      <window_info anchor="bottom" id="Find" order="1" weight="0.32833788" />
       <window_info anchor="bottom" id="Version Control" order="7" weight="0.32833788" />
       <window_info anchor="bottom" id="Python Console" order="8" weight="0.32833788" />
-      <window_info active="true" anchor="bottom" id="Run" order="2" visible="true" weight="0.5504087" />
+      <window_info anchor="bottom" id="Run" order="2" weight="0.5504087" />
       <window_info anchor="bottom" id="Debug" order="3" weight="0.35967302" />
       <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.25" />
       <window_info anchor="bottom" id="Version Control" order="7" weight="0.32833788" />
@@ -260,25 +285,8 @@
       <window_info anchor="bottom" id="Message" order="0" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
-      <window_info anchor="bottom" id="Find" order="1" weight="0.32833788" />
       <window_info anchor="bottom" id="Python Console" order="8" weight="0.32833788" />
     </layout>
-    <layout-to-restore>
-      <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.25" />
-      <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
-      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.20158625" />
-      <window_info id="Structure" order="1" weight="0.25" />
-      <window_info anchor="right" id="Commander" internal_type="SLIDING" order="0" type="SLIDING" weight="0.4" />
-      <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
-      <window_info anchor="bottom" id="TODO" order="6" />
-      <window_info anchor="bottom" id="Version Control" order="7" weight="0.32833788" />
-      <window_info active="true" anchor="bottom" id="Run" order="2" visible="true" weight="0.5504087" />
-      <window_info anchor="bottom" id="Debug" order="3" weight="0.35967302" />
-      <window_info anchor="bottom" id="Message" order="0" />
-      <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
-      <window_info anchor="bottom" id="Find" order="1" weight="0.32833788" />
-      <window_info anchor="bottom" id="Python Console" order="8" weight="0.32833788" />
-    </layout-to-restore>
   </component>
   <component name="VcsContentAnnotationSettings">
     <option name="myLimit" value="2678400000" />
@@ -291,19 +299,9 @@
     <breakpoint-manager>
       <breakpoints>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
-          <url>file://$PROJECT_DIR$/dataloader.py</url>
-          <line>103</line>
-          <option name="timeStamp" value="72" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/try.py</url>
           <line>3</line>
           <option name="timeStamp" value="73" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
-          <url>file://$PROJECT_DIR$/dataloader.py</url>
-          <line>98</line>
-          <option name="timeStamp" value="74" />
         </line-breakpoint>
       </breakpoints>
       <default-breakpoints>
@@ -326,8 +324,6 @@
     </expressions>
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/../GAN/venv/Lib/site-packages/tensorflow/python/ops/math_ops.py" />
-    <entry file="file://$PROJECT_DIR$/../GAN/venv/Lib/site-packages/tensorflow/python/ops/embedding_ops.py" />
     <entry file="file://$PROJECT_DIR$/target_lstm.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="986">
@@ -539,27 +535,10 @@
     <entry file="file://$PROJECT_DIR$/../GAN/venv/Lib/site-packages/tensorflow/python/ops/math_ops.py" />
     <entry file="file://$PROJECT_DIR$/../GAN/venv/Lib/site-packages/tensorflow/python/ops/embedding_ops.py" />
     <entry file="file://$PROJECT_DIR$/triak.py" />
-    <entry file="file://$PROJECT_DIR$/save/ye_data.txt">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="255">
-          <caret line="1512" column="4" lean-forward="true" selection-start-line="1512" selection-start-column="4" selection-end-line="1512" selection-end-column="4" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/save/eval_file.txt">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="468">
           <caret line="9976" lean-forward="true" selection-start-line="9976" selection-end-line="9976" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/generator.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="360">
-          <caret line="196" column="41" lean-forward="true" selection-start-line="196" selection-start-column="41" selection-end-line="196" selection-end-column="41" />
-          <folding>
-            <element signature="e#6701#8930#0" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -574,30 +553,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="241">
           <caret line="310" selection-start-line="310" selection-end-line="310" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/save/generator_sample.txt">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="81">
-          <caret line="9977" column="21" selection-start-line="9977" selection-start-column="21" selection-end-line="9977" selection-end-column="21" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/save/word2indx.txt">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="119">
-          <caret line="7" column="8" selection-start-line="7" selection-end-line="7" selection-end-column="8" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/dataloader.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="210">
-          <caret line="75" column="30" selection-start-line="75" selection-start-column="30" selection-end-line="75" selection-end-column="30" />
-          <folding>
-            <element signature="e#0#18#0" expanded="true" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -618,28 +573,83 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/discriminator.py">
+    <entry file="file://$PROJECT_DIR$/generator_sample.txt">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="183">
-          <caret line="135" lean-forward="true" selection-start-line="135" selection-end-line="135" />
+        <state relative-caret-position="374">
+          <caret line="22" column="49" selection-start-line="22" selection-start-column="49" selection-end-line="22" selection-end-column="49" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/word2index.py">
+    <entry file="file://$PROJECT_DIR$/save/generator_sample.txt">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="245">
-          <caret line="58" selection-start-line="58" selection-end-line="58" />
+        <state relative-caret-position="169609">
+          <caret line="9977" column="21" selection-start-line="9977" selection-start-column="21" selection-end-line="9977" selection-end-column="21" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/sequence_gan.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-272">
-          <caret line="137" column="24" selection-start-line="137" selection-start-column="24" selection-end-line="137" selection-end-column="24" />
+        <state relative-caret-position="1020">
+          <caret line="109" column="13" lean-forward="true" selection-start-line="109" selection-start-column="13" selection-end-line="109" selection-end-column="13" />
           <folding>
             <element signature="e#0#18#0" expanded="true" />
             <element signature="e#1688#2024#0" />
             <element signature="e#2586#2929#0" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/save/word2indx.txt">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="119">
+          <caret line="7" column="8" selection-start-line="7" selection-end-line="7" selection-end-column="8" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/save/ye_data.txt">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="255">
+          <caret line="1512" column="4" lean-forward="true" selection-start-line="1512" selection-start-column="4" selection-end-line="1512" selection-end-column="4" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/output_arabic.txt">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-5440">
+          <caret line="223" column="25" selection-start-line="223" selection-start-column="25" selection-end-line="223" selection-end-column="25" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/word2index.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="275">
+          <caret line="70" selection-start-line="70" selection-end-line="70" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/generator.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1148">
+          <caret line="196" column="41" selection-start-line="196" selection-start-column="41" selection-end-line="196" selection-end-column="41" />
+          <folding>
+            <element signature="e#6701#8930#0" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/discriminator.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="2134">
+          <caret line="135" selection-start-line="135" selection-end-line="135" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/dataloader.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="374">
+          <caret line="94" column="8" selection-start-line="94" selection-start-column="8" selection-end-line="94" selection-end-column="8" />
+          <folding>
+            <element signature="e#0#18#0" expanded="true" />
           </folding>
         </state>
       </provider>

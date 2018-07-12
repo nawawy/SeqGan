@@ -93,11 +93,6 @@ class Dis_dataloader():
         positive_examples = padding_data(positive_examples, self.word_dict)
         self.sentences = np.concatenate([positive_examples, negative_examples], 0)
 
-        # print(len(positive_examples), len(positive_examples[0]))
-        # print(len(negative_examples), len(negative_examples[0]))
-
-        #self.sentences = np.array(positive_examples + negative_examples)
-
         # Generate labels
         positive_labels = [[0, 1] for _ in positive_examples]
         negative_labels = [[1, 0] for _ in negative_examples]
