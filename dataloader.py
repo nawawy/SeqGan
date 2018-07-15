@@ -10,22 +10,23 @@ def str2idxs(sents, w2x):
 
     return sents
 
+
 def padding_data(seqs, w2x):
         seqs = preprocessing.sequence.pad_sequences(seqs, dtype='int32', padding='pre', truncating='pre',value=w2x.PAD_IDX)
         return seqs
 
 
 class Gen_Data_loader():
+
     def __init__(self, word_dict,  batch_size):
         self.batch_size = batch_size
         self.token_stream = []
-        self.word_dict = word_dict#Word2index()
-        #self.word_dict.load_dict('save/word2indx.txt')
+        self.word_dict = word_dict
 
     def create_batches(self, data_file, gen_flag=0):
         self.token_stream = []
         first = True
-        with open(data_file, 'r', encoding='utf-8') as f:
+        with open(data_file, 'r', encoding='ISO-8859-1') as f:
             for line in f:
                 line = line.strip()
                 line = line.split()
@@ -67,14 +68,13 @@ class Dis_dataloader():
         self.batch_size = batch_size
         self.sentences = np.array([])
         self.labels = np.array([])
-        self.word_dict = word_dict #Word2index()
-        #self.word_dict.load_dict('save/word2indx.txt')
+        self.word_dict = word_dict
 
     def load_train_data(self, positive_file, negative_file):
         # Load data
         positive_examples = []
         negative_examples = []
-        with open(positive_file, encoding='utf-8')as fin:
+        with open(positive_file, encoding='ISO-8859-1')as fin:
             for line in fin:
                 line = line.strip()
                 line = line.split()

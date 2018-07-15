@@ -1,6 +1,3 @@
-from collections import defaultdict
-
-
 UNK_TOKEN = '<unk>'
 SOS_TOKEN = '<sos>'
 EOS_TOKEN = '<eos>'
@@ -11,11 +8,15 @@ class Word2index(object):
 
     def __init__(self):
         self.dict = {}
-
+        self.count = 0
 
     def create_dict(self, input_file, output_file):
-        self.fout = open(output_file, 'w', encoding='utf-8')
-        self.fin = open(input_file, 'r', encoding='utf-8')
+        """
+        :param input_file: data input file path
+        :param output_file: vocab wors listed in a file for reference
+        """
+        self.fout = open(output_file, 'w', encoding='ISO-8859-1')
+        self.fin = open(input_file, 'r', encoding='ISO-8859-1')  #ISO-8859-1
 
         # writing first the reserved words in the text file
         self.fout.write('%s\n' % SOS_TOKEN)  # start token
@@ -23,18 +24,51 @@ class Word2index(object):
         self.fout.write('%s\n' % PAD_TOKEN)  # start token
         self.fout.write('%s\n' % UNK_TOKEN)  # start token
 
+        self.dict[SOS_TOKEN] = 0
+        self.dict[EOS_TOKEN] = 1
+        self.dict[PAD_TOKEN] = 2
+        self.dict[UNK_TOKEN] = 3
 
         vocab = set()
+
+        self.count = 4
 
         for line in self.fin:
             words = line.rsplit()
             for word in words:
-                if not word in vocab:
+                if word not in vocab:
                     self.fout.write(word + '\n')
+                    self.dict[word] = list([self.count, 1])
+                    self.count += 1
                     vocab.add(word)
+                else:
+                    self.dict[word][1] += 1
+
+    def remove_least_freq(self, input_file, threshold):
+        """
+        :param input_file: name of data input file
+        :param threshold: threshold of the frequency of the word to remove
+        """
+        fin = open(input_file, 'r+', encoding='ISO-8859-1')
+        lines = fin.readlines()
+        for line_indx, line in enumerate(lines):
+            print('Line : ', line_indx)
+            words = line.rsplit()
+            for word in words:
+                if self.dict[word][1] <= threshold:
+                    del lines[line_indx]
+                    break
+        fout = open('ar_filtered', 'w', encoding='ISO-8859-1')
+        fout.truncate(0)
+        fout.writelines(lines)
 
     def load_dict(self, word_file):
-        self.fin = open(word_file, 'r', encoding='utf-8')
+        """
+
+        :param word_file: vocab file path
+        :return: load the self.dict member dictionary
+        """
+        self.fin = open(word_file, 'r', encoding='ISO-8859-1')
         self.count = 0
 
         self.dict = {}
@@ -42,9 +76,9 @@ class Word2index(object):
 
         first = True
         for word in self.fin:
-            word = word[0:-1]   # remove \n
+            word = word[0:-1]  # remove \n
 
-            if(first):
+            if (first):
                 word = word.replace('\ufeff', '')
                 first = False
 
@@ -71,18 +105,3 @@ class Word2index(object):
 
     def __call__(self, word):
         return self.dict.get(word, self.UNK_IDX)
-
-w = Word2index()
-w.load_dict('save/word2indx.txt')
-f = open('save/generator_sample.txt', 'r')
-fout = open('output_arabic.txt', 'w', encoding=
-            'utf-8')
-for line in f:
-    line = line.strip()
-    line = line.split()
-    parse_line = [str(w.indx_to_word(int(x))) for x in line]
-    out = ''
-    for word in parse_line:
-        out += word + ' '
-    fout.write('%s\n' % out)
-

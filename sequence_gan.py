@@ -7,19 +7,19 @@ from discriminator import Discriminator
 from rollout import ROLLOUT
 from target_lstm import TARGET_LSTM
 from word2index import Word2index
-#import cPickle
+# import cPickle
 import _pickle as cPickle
 
 #########################################################################################
 #  Generator  Hyper-parameters
 ######################################################################################
-EMB_DIM = 32 # embedding dimension
-HIDDEN_DIM = 32 # hidden state dimension of lstm cell
-SEQ_LENGTH = 20 # sequence length
+EMB_DIM = 32  # embedding dimension
+HIDDEN_DIM = 32  # hidden state dimension of lstm cell
+SEQ_LENGTH = 20  # sequence length
 START_TOKEN = 0
-PRE_EPOCH_NUM = 40 # supervise (maximum likelihood estimation) epochs //changed from 120 to 40
+PRE_EPOCH_NUM = 40  # supervise (maximum likelihood estimation) epochs //changed from 120 to 40
 SEED = 88
-BATCH_SIZE = 64
+BATCH_SIZE = 8
 
 #########################################################################################
 #  Discriminator  Hyper-parameters
@@ -29,16 +29,16 @@ dis_filter_sizes = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 15, 20]
 dis_num_filters = [100, 200, 200, 200, 200, 100, 100, 100, 100, 100, 160, 160]
 dis_dropout_keep_prob = 0.75
 dis_l2_reg_lambda = 0.2
-dis_batch_size = 64
+dis_batch_size = 8
 
 #########################################################################################
 #  Basic Training Parameters
 #########################################################################################
-TOTAL_BATCH = 100 # Changed from 200 to 100
-positive_file = 'save/ye_data.txt'
+TOTAL_BATCH = 200
+positive_file = 'save/ar_filtered.txt'
 negative_file = 'save/generator_sample.txt'
 eval_file = 'save/eval_file.txt'
-vocab_file ='save/word2indx.txt'
+vocab_file = 'save/MSA_vocab.txt'
 generated_num = 10000
 
 
@@ -90,30 +90,31 @@ def main():
     word_dict.load_dict(vocab_file)
 
     gen_data_loader = Gen_Data_loader(word_dict, BATCH_SIZE)
-    likelihood_data_loader = Gen_Data_loader(word_dict, BATCH_SIZE) # For testing
-    vocab_size = len(word_dict) # changed 5000 to 10581
+    likelihood_data_loader = Gen_Data_loader(word_dict, BATCH_SIZE)  # For testing
+    vocab_size = len(word_dict)  # changed 5000 to 10581
     dis_data_loader = Dis_dataloader(word_dict, BATCH_SIZE)
 
     generator = Generator(vocab_size, BATCH_SIZE, EMB_DIM, HIDDEN_DIM, SEQ_LENGTH, START_TOKEN)
     target_params = cPickle.load(open('save/target_params_py3.pkl', 'rb'))
 
-    target_lstm = TARGET_LSTM(vocab_size, BATCH_SIZE, EMB_DIM, HIDDEN_DIM, SEQ_LENGTH, START_TOKEN, target_params) # The oracle model
+    target_lstm = TARGET_LSTM(vocab_size, BATCH_SIZE, EMB_DIM, HIDDEN_DIM, SEQ_LENGTH, START_TOKEN,
+                              target_params)  # The oracle model
 
-    discriminator = Discriminator(sequence_length=20, num_classes=2, vocab_size=vocab_size, embedding_size=dis_embedding_dim, 
-                                filter_sizes=dis_filter_sizes, num_filters=dis_num_filters, l2_reg_lambda=dis_l2_reg_lambda)
+    discriminator = Discriminator(sequence_length=20, num_classes=2, vocab_size=vocab_size,
+                                  embedding_size=dis_embedding_dim,
+                                  filter_sizes=dis_filter_sizes, num_filters=dis_num_filters,
+                                  l2_reg_lambda=dis_l2_reg_lambda)
 
     config = tf.ConfigProto()
     config.gpu_options.allow_growth = True
     sess = tf.Session(config=config)
     sess.run(tf.global_variables_initializer())
 
-    # First, use the oracle model to provide the positive examples, which are sampled from the oracle data distribution
-    # generate_samples(sess, target_lstm, BATCH_SIZE, generated_num, oracle_file)
     gen_data_loader.create_batches(positive_file, gen_flag=1)
 
     log = open('save/experiment-log.txt', 'w')
     #  pre-train generator
-    print ('Start pre-training...')
+    print('Start pre-training...')
     log.write('pre-training...\n')
     for epoch in range(PRE_EPOCH_NUM):
         loss = pre_train_epoch(sess, generator, gen_data_loader)
@@ -121,11 +122,12 @@ def main():
             generate_samples(sess, generator, BATCH_SIZE, generated_num, eval_file)
             likelihood_data_loader.create_batches(eval_file)
             test_loss = target_loss(sess, target_lstm, likelihood_data_loader)
-            print ('pre-train epoch ', epoch, 'test_loss ', test_loss)
-            buffer = 'epoch:\t'+ str(epoch) + '\tnll:\t' + str(test_loss) + '\n'
+            print('pre-train epoch ', epoch, 'test_loss ', test_loss)
+            buffer = 'epoch:\t' + str(epoch) + '\tnll:\t' + str(test_loss) + '\n'
             log.write(buffer)
 
-    print ('Start pre-training discriminator...')
+
+    print('Start pre-training discriminator...')
     # Train 3 epoch on the generated data and do this for 50 times
     for epoch in range(50):
         generate_samples(sess, generator, BATCH_SIZE, generated_num, negative_file)
@@ -144,8 +146,10 @@ def main():
 
     rollout = ROLLOUT(generator, 0.8)
 
-    print ('#########################################################################')
-    print ('Start Adversarial Training...')
+    saver = tf.train.Saver()
+
+    print('#########################################################################')
+    print('Start Adversarial Training...')
     log.write('adversarial training...\n')
     for total_batch in range(TOTAL_BATCH):
         # Train the generator for one step
@@ -155,13 +159,14 @@ def main():
             feed = {generator.x: samples, generator.rewards: rewards}
             _ = sess.run(generator.g_updates, feed_dict=feed)
 
+
         # Test
         if total_batch % 5 == 0 or total_batch == TOTAL_BATCH - 1:
             generate_samples(sess, generator, BATCH_SIZE, generated_num, eval_file)
             likelihood_data_loader.create_batches(eval_file, gen_flag=0)
             test_loss = target_loss(sess, target_lstm, likelihood_data_loader)
             buffer = 'epoch:\t' + str(total_batch) + '\tnll:\t' + str(test_loss) + '\n'
-            print ('total_batch: ', total_batch, 'test_loss: ', test_loss)
+            print('total_batch: ', total_batch, 'test_loss: ', test_loss)
             log.write(buffer)
 
         # Update roll-out parameters
@@ -183,9 +188,11 @@ def main():
                     }
                     _ = sess.run(discriminator.train_op, feed)
 
+        if total_batch % 5 == 0:
+            save_path = saver.save(sess, "save/checkpoints/model.ckpt", global_step=5)
+
     log.close()
 
 
 if __name__ == '__main__':
     main()
-
